@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,15 @@ use App\Http\Controllers\AuthController;
 Route::post('/register', [AuthController::class, 'register']); 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::post('/password/reset', [AuthController::class, 'resetPassword']);
+Route::post('/password/reset-link', [AuthController::class, 'resetPassword']);
+Route::get('/password/reset-token', function (Request $request) {
+    return response()->json(['token' => $request->query('token')]);
+})->name('password.reset');
+Route::post('/password/update', [AuthController::class, 'updatePassword']);
+Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUserAuthenticated']);
+Route::middleware('auth:sanctum')->get('/users', [AuthController::class, 'getUsers']);
+Route::middleware('auth:sanctum')->delete('/user/{id}', [AuthController::class, 'deleteUser']);
+Route::middleware('auth:sanctum')->put('/user/profile', [ProfileController::class, 'updateProfile']);
+
 
 
