@@ -19,7 +19,7 @@ class AuthController extends Controller
         Log::info('Register method called');
         $validated = $request->validate([ // Validate the request data
             'username' => 'required|string|max:255',
-            'role' => 'required|string|in:student,teacher,admin',
+            'role' => 'nullable|string|in:student,teacher,admin',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|confirmed|string|min:6',
         ]);
